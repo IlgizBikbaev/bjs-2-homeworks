@@ -9,9 +9,6 @@ class PrintEditionItem {
 
 fix() {
     this.state = this.state * 1.5;
-    if(this.state > 100) {
-        this.state = 100;
-    }
 } 
 
 set state(number) {
@@ -61,8 +58,8 @@ class FantasticBook extends Book {
 }
 
 class DetectiveBook extends Book {
-    constructor(name, releaseDate, pagesCount, author) {
-        super(name, releaseDate, pagesCount, author);
+    constructor(author,name, releaseDate, pagesCount) {
+        super(author, name, releaseDate, pagesCount);
         this.type = "detective";
     }
 }
@@ -80,23 +77,14 @@ addBook(book) {
 }
 
 findBookBy(type, value) {
-    let res = this.books.find((item) => item[type] === value);
-    
-    if (res === undefined) {
-      return null;
-    }
-    return res;
+    const findResult = this.books.find((item) => item[type] === value);
+    return findResult || null;
 }
 
 giveBookByName(bookName) {
-    const bookIndex = this.books.findIndex((item) => item.name === bookName);
-
-    if(bookIndex < 0) {
-        return null;
-    }
-
-    let book = this.books[bookIndex];
-    this.books.splice(bookIndex, 1);
+    const book = this.findBookBy("name", bookName);
+    if (!book) return null;
+    this.books = this.books.filter((item) => item.name !== bookName);
     return book;
 }
 }
